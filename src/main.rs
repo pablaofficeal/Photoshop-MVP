@@ -267,13 +267,30 @@ fn build_ui() -> impl Widget<AppState> {
                             state.color_b_input = "0".to_string();
                         })
                 )
-                .with_child(
-                    Button::new("Blue")
+                .with_child(Button::new("Blue")
                         .on_click(|_ctx, state: &mut AppState, _env| {
                             state.brush_color = Color::rgb8(0, 0, 255);
                             state.color_r_input = "0".to_string();
                             state.color_g_input = "0".to_string();
                             state.color_b_input = "255".to_string();
+                        })
+                )
+                .with_child(
+                    Button::new("Cyan")
+                        .on_click(|_ctx, state: &mut AppState, _env| {
+                            state.brush_color = Color::rgb8(0, 255, 255);
+                            state.color_r_input = "0".to_string();
+                            state.color_g_input = "255".to_string();
+                            state.color_b_input = "255".to_string();
+                        })
+                )
+                .with_child(
+                    Button::new("Brown")
+                        .on_click(|_ctx, state: &mut AppState, _env| {
+                            state.brush_color = Color::rgb8(139,69,19);
+                            state.color_r_input = "139".to_string();
+                            state.color_g_input = "69".to_string();
+                            state.color_b_input = "19".to_string();
                         })
                 )
                 .with_child(
@@ -286,6 +303,24 @@ fn build_ui() -> impl Widget<AppState> {
                         })
                 )
                 .with_child(
+                    Button::new("test color")
+                        .on_click(|_ctx, state: &mut AppState, _env| {
+                            state.brush_color = Color::rgb8(196, 55, 140);
+                            state.color_r_input = "196".to_string();
+                            state.color_g_input = "55".to_string();
+                            state.color_b_input = "140".to_string();
+                        })
+                )
+                .with_child(
+                    Button::new("test color1")
+                        .on_click(|_ctx, state: &mut AppState, _env| {
+                            state.brush_color = Color::rgb8(72,61,139);
+                            state.color_r_input = "72".to_string();
+                            state.color_g_input = "61".to_string();
+                            state.color_b_input = "139".to_string();
+                        })
+                )
+                .with_child(
                     Button::new("Black")
                         .on_click(|_ctx, state: &mut AppState, _env| {
                             state.brush_color = Color::rgb8(0, 0, 0);
@@ -293,8 +328,7 @@ fn build_ui() -> impl Widget<AppState> {
                             state.color_g_input = "0".to_string();
                             state.color_b_input = "0".to_string();
                         })
-                )
-        )
+                ))
         .with_spacer(10.0)
         .with_child(Label::new("Background Color").with_text_size(16.0))
         .with_child(
@@ -315,12 +349,34 @@ fn build_ui() -> impl Widget<AppState> {
                     set_background_color(state, Color::rgba8(0, 0, 0, 0));
                 })
         )
+        .with_child(
+            Button::new("export=PNG")
+                .on_click(|_ctx, state: &mut AppState, _env| {
+                    let image = state.image.read().unwrap();
+                    image.save("output.png").expect("Failed to save image");
+                })
+        )
         .with_spacer(10.0)
         .with_child(
             Button::new("Save Image")
                 .on_click(|_ctx, state: &mut AppState, _env| {
                     let image = state.image.read().unwrap();
                     image.save("output.png").expect("Failed to save image");
+                })
+        )
+        .with_child(
+            Button::new("Clear Canvas")
+                .on_click(|_ctx, state: &mut AppState, _env| {
+                    let mut image = state.image.write().unwrap();
+                    for pixel in image.pixels_mut() {
+                        *pixel = Rgba([255, 255, 255, 255]);
+                    }
+                })
+        )
+        .with_child(
+            Button::new("EXIT")
+                .on_click(|_ctx, _state: &mut AppState, _env| {
+                    std::process::exit(0);
                 })
         )
         .padding(10.0)
