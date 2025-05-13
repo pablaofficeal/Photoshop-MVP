@@ -349,13 +349,6 @@ fn build_ui() -> impl Widget<AppState> {
                     set_background_color(state, Color::rgba8(0, 0, 0, 0));
                 })
         )
-        .with_child(
-            Button::new("export=PNG")
-                .on_click(|_ctx, state: &mut AppState, _env| {
-                    let image = state.image.read().unwrap();
-                    image.save("output.png").expect("Failed to save image");
-                })
-        )
         .with_spacer(10.0)
         .with_child(
             Button::new("Save Image")
